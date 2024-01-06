@@ -14,9 +14,9 @@ var dateText string = ""
 var curText ui.ActiveText = ui.ActiveText{Active: false, Pos: [2]int{0, 0}}
 var blinking bool = false
 var elapsedTime float32 = 0
+var addColor = rl.DarkGreen
 
 func HandleEntryPageInput(dGrid gr.DisplayGrid, font rl.Font) {
-
 	var height int = dGrid.Height
 	var width int = dGrid.Width
 	var inputRects []ui.TextCollissionLocation
@@ -43,7 +43,8 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid, font rl.Font) {
 
 	//Add Button
 	var addRect = ui.Button(float32(gr.GridPosXLeft(10, width)), float32(gr.GridPosYBot(3, height)), width, height, 1)
-	rl.DrawRectangleRec(addRect, rl.DarkGreen)
+
+	rl.DrawRectangleRec(addRect, addColor)
 	rl.DrawText("Add", int32(gr.GridPosTextXCent(10, width)), int32(gr.GridPosYBot(3, height)), 32, rl.White)
 
 	// Check if user is in input boxes
@@ -57,6 +58,13 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid, font rl.Font) {
 				curText = ui.ActiveText{Active: true, Pos: [2]int{int(rect.Location.X), int(rect.Location.Y)}}
 			}
 		}
+	}
+
+	//Add button hover color indicator
+	if rl.CheckCollisionPointRec(rl.GetMousePosition(), addRect) {
+		addColor = rl.Lime
+	} else {
+		addColor = rl.DarkGreen
 	}
 
 	if !inTextBox && rl.IsMouseButtonPressed(rl.MouseButtonLeft) {
