@@ -18,7 +18,7 @@ var blinking bool = false
 var elapsedTime float32 = 0
 var addColor = rl.DarkGreen
 
-func HandleEntryPageInput(dGrid gr.DisplayGrid, font rl.Font) bool {
+func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 	var height int = dGrid.Height
 	var width int = dGrid.Width
 	var inputRects []ui.TextCollissionLocation
@@ -29,19 +29,19 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid, font rl.Font) bool {
 	rl.DrawText("Entry Description", int32(gr.GridPosXLeft(1, width)), int32(gr.GridPosYTop(3, height)), 32, rl.DarkGreen)
 	var entryDescriptRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYBot(3, height)), width, height, 3), Text: &descText}
 	rl.DrawRectangleRec(entryDescriptRect.Location, rl.LightGray)
-	rl.DrawTextEx(font, descText, rl.Vector2{X: entryDescriptRect.Location.X + 15, Y: entryDescriptRect.Location.Y}, 28, 2, rl.Black)
+	rl.DrawText(descText, int32(entryDescriptRect.Location.X+15), int32(entryDescriptRect.Location.Y), 28, rl.Black)
 
 	//Amount Field
 	rl.DrawText("Amount", int32(gr.GridPosXLeft(5, width)), int32(gr.GridPosYTop(3, height)), 32, rl.DarkGreen)
 	var amountRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(5, width)), float32(gr.GridPosYBot(3, height)), width, height, 2), Text: &amtText}
 	rl.DrawRectangleRec(amountRect.Location, rl.LightGray)
-	rl.DrawTextEx(font, amtText, rl.Vector2{X: amountRect.Location.X + 15, Y: amountRect.Location.Y}, 28, 2, rl.Black)
+	rl.DrawText(amtText, int32(amountRect.Location.X+15), int32(amountRect.Location.Y), 28, rl.Black)
 
 	//Date Field
 	rl.DrawText("Date", int32(gr.GridPosXLeft(7, width)), int32(gr.GridPosYTop(3, height)), 32, rl.DarkGreen)
 	var dateRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(7, width)), float32(gr.GridPosYBot(3, height)), width, height, 2), Text: &dateText}
 	rl.DrawRectangleRec(dateRect.Location, rl.LightGray)
-	rl.DrawTextEx(font, dateText, rl.Vector2{X: dateRect.Location.X + 15, Y: dateRect.Location.Y}, 28, 2, rl.Black)
+	rl.DrawText(dateText, int32(dateRect.Location.X+15), int32(dateRect.Location.Y), 28, rl.Black)
 
 	//Add Button
 	var addRect = ui.Button(float32(gr.GridPosXLeft(10, width)), float32(gr.GridPosYBot(3, height)), width, height, 1)
@@ -74,7 +74,7 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid, font rl.Font) bool {
 	return saved
 }
 
-func HandleEntryPageResults(dGrid gr.DisplayGrid, font rl.Font, records []enJson.Entries) {
+func HandleEntryPageResults(dGrid gr.DisplayGrid, records []enJson.Entries) {
 	var height int = dGrid.Height
 	var width int = dGrid.Width
 	//	var inputRects []ui.TextCollissionLocation
@@ -137,14 +137,14 @@ func HandleEntryPageResults(dGrid gr.DisplayGrid, font rl.Font, records []enJson
 			break
 		}
 		strAmt1 := strconv.FormatFloat(float64(records[j].Amount), 'f', -1, 32)
-		rl.DrawTextEx(font, records[j].Description, rl.Vector2{X: float32(gr.GridPosXLeft(1, width) + 5), Y: float32(gr.GridPosYTop(6+rowCount, height))}, 28, 2, rl.Black)
-		rl.DrawTextEx(font, strAmt1, rl.Vector2{X: float32(gr.GridPosXLeft(4, width)) + 5, Y: float32(gr.GridPosYTop(6+rowCount, height))}, 28, 2, rl.Black)
-		rl.DrawTextEx(font, records[j].Date, rl.Vector2{X: float32(gr.GridPosXLeft(6, width)) + 5, Y: float32(gr.GridPosYTop(6+rowCount, height))}, 28, 2, rl.Black)
+		rl.DrawText(records[j].Description, int32(gr.GridPosXLeft(1, width)+5), int32(gr.GridPosYTop(6+rowCount, height)), 28, rl.Black)
+		rl.DrawText(strAmt1, int32(gr.GridPosXLeft(4, width))+5, int32(gr.GridPosYTop(6+rowCount, height)), 28, rl.Black)
+		rl.DrawText(records[j].Date, int32(gr.GridPosXLeft(6, width))+5, int32(gr.GridPosYTop(6+rowCount, height)), 28, rl.Black)
 		if j+1 <= len(records)-1 {
 			strAmt2 := strconv.FormatFloat(float64(records[j+1].Amount), 'f', -1, 32)
-			rl.DrawTextEx(font, records[j+1].Description, rl.Vector2{X: float32(gr.GridPosXLeft(1, width) + 5), Y: float32(gr.GridPosYBot(6+rowCount, height))}, 28, 2, rl.Black)
-			rl.DrawTextEx(font, strAmt2, rl.Vector2{X: float32(gr.GridPosXLeft(4, width)) + 5, Y: float32(gr.GridPosYBot(6+rowCount, height))}, 28, 2, rl.Black)
-			rl.DrawTextEx(font, records[j+1].Date, rl.Vector2{X: float32(gr.GridPosXLeft(6, width)) + 5, Y: float32(gr.GridPosYBot(6+rowCount, height))}, 28, 2, rl.Black)
+			rl.DrawText(records[j+1].Description, int32(gr.GridPosXLeft(1, width)+5), int32(gr.GridPosYBot(6+rowCount, height)), 28, rl.Black)
+			rl.DrawText(strAmt2, int32(gr.GridPosXLeft(4, width))+5, int32(gr.GridPosYBot(6+rowCount, height)), 28, rl.Black)
+			rl.DrawText(records[j+1].Date, int32(gr.GridPosXLeft(6, width))+5, int32(gr.GridPosYBot(6+rowCount, height)), 28, rl.Black)
 		}
 		rowCount++
 	}

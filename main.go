@@ -12,7 +12,7 @@ import (
 func main() {
 	var res resolution = res720()
 	dGrid := gr.NewGrid([2]int{res.x, res.y})
-	var font rl.Font = rl.LoadFontEx("fonts/Louis George Cafe Bold.ttf", 50, nil)
+	//var font rl.Font = rl.LoadFontEx("fonts/Louis George Cafe Bold.ttf", 50, nil)
 	var entries []enJson.Entries
 	var saved bool = false
 
@@ -25,8 +25,8 @@ func main() {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Black)
 		banner.DrawBanner((dGrid))
-		saved = entry.HandleEntryPageInput(dGrid, font)
-		entry.HandleEntryPageResults(dGrid, font, entries)
+		saved = entry.HandleEntryPageInput(dGrid)
+		entry.HandleEntryPageResults(dGrid, entries)
 		if saved {
 			enJson.LoadEntries(&entries)
 			saved = false
