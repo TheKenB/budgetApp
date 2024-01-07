@@ -1,0 +1,17 @@
+[
+ {
+  "Description": "Gas",
+  "Amount": 10,
+  "Date": "10/10/2022"
+ },
+ {
+  "Description": "Other Stuff",
+  "Amount": 11,
+  "Date": "10/11/2022"
+ },
+ {
+  "Description": "Ai Voice",
+  "Amount": 29.99,
+  "Date": "01/06/2025"
+ }
+]

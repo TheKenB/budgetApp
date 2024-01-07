@@ -3,6 +3,7 @@ package main
 import (
 	banner "main/banner"
 	gr "main/grid"
+	enJson "main/json"
 	entry "main/pageEntry"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -14,12 +15,14 @@ func main() {
 	rl.InitWindow(int32(res.x), int32(res.y), "budgeting")
 	rl.SetTargetFPS(60)
 	var font rl.Font = rl.LoadFontEx("fonts/Louis George Cafe Bold.ttf", 50, nil)
+	var entries []enJson.Entries
+	enJson.LoadEntries(&entries)
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Black)
 		banner.DrawBanner((dGrid))
 		entry.HandleEntryPageInput(dGrid, font)
-		entry.HandleEntryPageResults(dGrid, font)
+		entry.HandleEntryPageResults(dGrid, font, entries)
 		// //		Draw Grid
 		// for i := 0; i < dGrid.Rows; i++ {
 		// 	rl.DrawLine(0, int32(i*dGrid.Height), int32(res.x), int32(i*dGrid.Height), rl.Blue)

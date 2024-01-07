@@ -3,6 +3,8 @@ package pageEntry
 import (
 	gr "main/grid"
 	ui "main/inputs"
+	enJson "main/json"
+	"strconv"
 	"unicode/utf8"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -59,13 +61,8 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid, font rl.Font) {
 			}
 		}
 	}
-
-	//Add button hover color indicator
-	if rl.CheckCollisionPointRec(rl.GetMousePosition(), addRect) {
-		addColor = rl.Lime
-	} else {
-		addColor = rl.DarkGreen
-	}
+	HandleInputTyping(inputRects)
+	HandleAddButton(addRect)
 
 	if !inTextBox && rl.IsMouseButtonPressed(rl.MouseButtonLeft) {
 		curText.Active = false
@@ -74,46 +71,9 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid, font rl.Font) {
 	if !inTextBox {
 		rl.SetMouseCursor(rl.MouseCursorArrow)
 	}
-
-	//Check if in typing mode and update text
-	if curText.Active {
-
-		for _, box := range inputRects {
-			// If current collission is a input box
-			if int(box.Location.X) == curText.Pos[0] && int(box.Location.Y) == curText.Pos[1] {
-				numCharacters := utf8.RuneCountInString(*box.Text)
-				key := rl.GetCharPressed()
-
-				if elapsedTime >= 0.5 {
-					blinking = !blinking
-					elapsedTime = 0
-				}
-				// Check if more characters have been pressed on the same frame
-				for key > 0 {
-					// NOTE: Only allow keys in range [32..125]
-					if (key >= 32) && (key <= 125) && (numCharacters < 40) {
-						*box.Text = *box.Text + string(key)
-					}
-					key = rl.GetCharPressed() // Check next character in the queue
-				}
-
-				if rl.IsKeyPressed(rl.KeyBackspace) {
-					if numCharacters != 0 {
-						tempString := *box.Text
-						*box.Text = tempString[:numCharacters-1]
-					}
-				}
-
-				var textBuffer int32 = rl.MeasureText(*box.Text, 28) + 15
-				if blinking {
-					rl.DrawText("_", box.Location.ToInt32().X+textBuffer, box.Location.ToInt32().Y, 28, rl.Black)
-				}
-			}
-		}
-	}
 }
 
-func HandleEntryPageResults(dGrid gr.DisplayGrid, font rl.Font) {
+func HandleEntryPageResults(dGrid gr.DisplayGrid, font rl.Font, records []enJson.Entries) {
 	var height int = dGrid.Height
 	var width int = dGrid.Width
 	//	var inputRects []ui.TextCollissionLocation
@@ -167,5 +127,88 @@ func HandleEntryPageResults(dGrid gr.DisplayGrid, font rl.Font) {
 		rl.DrawRectangleRec(resultDateTop, rl.DarkGray)
 		rl.DrawRectangleRec(resultActTop, rl.DarkGray)
 		rl.DrawRectangleRec(resultActBot, rl.LightGray)
+	}
+
+	for j, rec := range records {
+		if int(j)%2 == 0 {
+			rl.DrawText(rec.Description, int32(gr.GridPosXLeft(1, width)), int32(gr.GridPosYTop(6+j, height)), 26, rl.Black)
+		} else {
+			rl.DrawText(rec.Description, int32(gr.GridPosXLeft(1, width)), int32(gr.GridPosYBot(6+j, height)), 26, rl.Black)
+		}
+	}
+}
+
+func ClearInputs() {
+	descText = ""
+	amtText = ""
+	dateText = ""
+}
+
+func HandleAddButton(rec rl.Rectangle) {
+	//Add button hover color indicator
+	if rl.CheckCollisionPointRec(rl.GetMousePosition(), rec) {
+		addColor = rl.Lime
+		if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+			amt, err := strconv.ParseFloat(amtText, 32)
+			if err != nil {
+				panic(err)
+			}
+			var newEntry enJson.Entries = enJson.Entries{Description: descText, Amount: float32(amt), Date: dateText}
+			enJson.SaveEntry(newEntry)
+			ClearInputs()
+		}
+	} else {
+		addColor = rl.DarkGreen
+	}
+}
+
+func HandleInputTyping(recs []ui.TextCollissionLocation) {
+	//Check if in typing mode and update text
+	var indexMod = 0
+	var tabbing = false
+	if curText.Active {
+		for i, box := range recs {
+
+			// If current collission is a input box
+			if int(box.Location.X) == curText.Pos[0] && int(box.Location.Y) == curText.Pos[1] && !tabbing {
+				//Skip to next box
+				if rl.IsKeyReleased(rl.KeyTab) {
+					if i < len(recs)-1 {
+						indexMod = i + 1
+					}
+					curText.Pos = [2]int{int(recs[indexMod].Location.X), int(recs[indexMod].Location.Y)}
+					tabbing = true
+					continue
+				}
+
+				numCharacters := utf8.RuneCountInString(*box.Text)
+				key := rl.GetCharPressed()
+
+				if elapsedTime >= 0.5 {
+					blinking = !blinking
+					elapsedTime = 0
+				}
+				// Check if more characters have been pressed on the same frame
+				for key > 0 {
+					// NOTE: Only allow keys in range [32..125]
+					if (key >= 32) && (key <= 125) && (numCharacters < 40) {
+						*box.Text = *box.Text + string(key)
+					}
+					key = rl.GetCharPressed() // Check next character in the queue
+				}
+
+				if rl.IsKeyPressed(rl.KeyBackspace) {
+					if numCharacters != 0 {
+						tempString := *box.Text
+						*box.Text = tempString[:numCharacters-1]
+					}
+				}
+
+				var textBuffer int32 = rl.MeasureText(*box.Text, 28) + 15
+				if blinking {
+					rl.DrawText("_", box.Location.ToInt32().X+textBuffer, box.Location.ToInt32().Y, 28, rl.Black)
+				}
+			}
+		}
 	}
 }
