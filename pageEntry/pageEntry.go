@@ -1,6 +1,7 @@
 package pageEntry
 
 import (
+	errHand "main/errorHandle"
 	gr "main/grid"
 	ui "main/inputs"
 	enJson "main/json"
@@ -17,6 +18,9 @@ var curText ui.ActiveText = ui.ActiveText{Active: false, Pos: [2]int{0, 0}}
 var blinking bool = false
 var elapsedTime float32 = 0
 var addColor = rl.DarkGreen
+var descErr string = ""
+var amtErr string = ""
+var dateErr string = ""
 
 func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 	var height int = dGrid.Height
@@ -30,18 +34,21 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 	var entryDescriptRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYBot(3, height)), width, height, 3), Text: &descText}
 	rl.DrawRectangleRec(entryDescriptRect.Location, rl.LightGray)
 	rl.DrawText(descText, int32(entryDescriptRect.Location.X+15), int32(entryDescriptRect.Location.Y), 28, rl.Black)
+	rl.DrawText(descErr, int32(entryDescriptRect.Location.X+10), int32(gr.GridPosYTop(4, height)), 24, rl.Red)
 
 	//Amount Field
 	rl.DrawText("Amount", int32(gr.GridPosXLeft(5, width)), int32(gr.GridPosYTop(3, height)), 32, rl.DarkGreen)
 	var amountRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(5, width)), float32(gr.GridPosYBot(3, height)), width, height, 2), Text: &amtText}
 	rl.DrawRectangleRec(amountRect.Location, rl.LightGray)
 	rl.DrawText(amtText, int32(amountRect.Location.X+15), int32(amountRect.Location.Y), 28, rl.Black)
+	rl.DrawText(amtErr, int32(amountRect.Location.X+10), int32(gr.GridPosYTop(4, height)), 24, rl.Red)
 
 	//Date Field
 	rl.DrawText("Date", int32(gr.GridPosXLeft(7, width)), int32(gr.GridPosYTop(3, height)), 32, rl.DarkGreen)
 	var dateRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(7, width)), float32(gr.GridPosYBot(3, height)), width, height, 2), Text: &dateText}
 	rl.DrawRectangleRec(dateRect.Location, rl.LightGray)
 	rl.DrawText(dateText, int32(dateRect.Location.X+15), int32(dateRect.Location.Y), 28, rl.Black)
+	rl.DrawText(dateErr, int32(dateRect.Location.X+10), int32(gr.GridPosYBot(4, height)), 24, rl.Red)
 
 	//Add Button
 	var addRect = ui.Button(float32(gr.GridPosXLeft(10, width)), float32(gr.GridPosYBot(3, height)), width, height, 1)
@@ -111,7 +118,6 @@ func HandleEntryPageResults(dGrid gr.DisplayGrid, records []enJson.Entries) {
 	rl.DrawRectangleRec(headerDivider, rl.DarkGreen)
 
 	for i := 0; i < 6; i++ {
-
 		var resultDescTop rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYTop(6+i, height)), width, height, 3)
 		var resultAmtTop rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYTop(6+i, height)), width, height, 2)
 		var resultDateTop rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(6, width)), float32(gr.GridPosYTop(6+i, height)), width, height, 2)
@@ -161,14 +167,19 @@ func HandleAddButton(rec rl.Rectangle) bool {
 	if rl.CheckCollisionPointRec(rl.GetMousePosition(), rec) {
 		addColor = rl.Lime
 		if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-			amt, err := strconv.ParseFloat(amtText, 32)
-			if err != nil {
-				panic(err)
+			descErr = errHand.EntryDescErr(descText)
+			amtErr = errHand.EntryAmtErr(amtText)
+			dateErr = errHand.EntryDateErr(dateText)
+			if len(descErr) == 0 && len(amtErr) == 0 && len(dateErr) == 0 {
+				amt, err := strconv.ParseFloat(amtText, 32)
+				if err != nil {
+					panic(err)
+				}
+				var newEntry enJson.Entries = enJson.Entries{Description: descText, Amount: float32(amt), Date: dateText}
+				enJson.SaveEntry(newEntry)
+				ClearInputs()
+				return true
 			}
-			var newEntry enJson.Entries = enJson.Entries{Description: descText, Amount: float32(amt), Date: dateText}
-			enJson.SaveEntry(newEntry)
-			ClearInputs()
-			return true
 		}
 	} else {
 		addColor = rl.DarkGreen

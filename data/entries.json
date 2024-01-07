@@ -8,5 +8,10 @@
   "Description": "A.I Tax",
   "Amount": 55.22,
   "Date": "10/10/2023"
+ },
+ {
+  "Description": "A big item",
+  "Amount": 22,
+  "Date": "02/02/2022"
  }
 ]
