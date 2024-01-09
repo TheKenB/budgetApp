@@ -49,9 +49,11 @@ func DrawResultRowBackdrop(x, y, rowNum, squares, width, height int) {
 }
 
 // Draw row result text
-func DrawResultRowText(value1, value2 string, x, y, width, height, rowCount, fontSize int) {
+func DrawResultRowText(value1, value2 string, x, y, width, height, rowCount, fontSize int, doubleDraw bool) {
 	color.DrawMinorText(value1, int32(gr.GridPosXLeft(x, width)+5), int32(gr.GridPosYTop(y+rowCount, height)), int32(fontSize), rl.Black)
-	color.DrawMinorText(value2, int32(gr.GridPosXLeft(x, width)+5), int32(gr.GridPosYBot(y+rowCount, height)), int32(fontSize), rl.Black)
+	if doubleDraw {
+		color.DrawMinorText(value2, int32(gr.GridPosXLeft(x, width)+5), int32(gr.GridPosYBot(y+rowCount, height)), int32(fontSize), rl.Black)
+	}
 }
 
 // Draw row action button

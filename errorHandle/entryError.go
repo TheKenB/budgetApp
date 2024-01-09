@@ -2,6 +2,7 @@ package entryError
 
 import (
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -27,7 +28,8 @@ func EntryAmtErr(num string) string {
 	}
 
 	tempString := strings.Replace(num, ".", "", -1)
-	if !regexp.MustCompile(`\d`).MatchString(tempString) {
+	_, err := strconv.Atoi(tempString)
+	if err != nil {
 		return "Enter a amount in style of 0.00 or 000"
 	}
 

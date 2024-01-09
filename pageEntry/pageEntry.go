@@ -1,7 +1,6 @@
 package pageEntry
 
 import (
-	"fmt"
 	errHand "main/errorHandle"
 	gr "main/grid"
 	ui "main/inputs"
@@ -66,7 +65,8 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 		}
 	}
 	HandleInputTyping(inputRects)
-	var saved bool = HandleAddButton(addRect)
+	var saved bool = false
+	saved = HandleAddButton(addRect)
 
 	if !inTextBox && rl.IsMouseButtonPressed(rl.MouseButtonLeft) {
 		curText.Active = false
@@ -99,7 +99,6 @@ func HandleAddButton(rec rl.Rectangle) bool {
 				}
 				var newEntry enJson.Entries = enJson.Entries{Description: descText, Amount: float32(amt), Date: dateText}
 				enJson.SaveEntry(newEntry)
-				fmt.Println(newEntry)
 				ClearInputs()
 				return true
 			}
