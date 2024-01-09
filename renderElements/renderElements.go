@@ -30,3 +30,18 @@ func DrawResultHeader(x, y, width, height, squares int, title string, end bool) 
 	}
 	rl.DrawText(title, int32(resultText.X+10), int32(resultText.Y), 28, rl.White)
 }
+
+// Draw back row backdrop
+func DrawResultRowBackdrop(x, y, rowNum, squares, width, height int) {
+	topRec := ui.Button(float32(gr.GridPosXLeft(x, width)), float32(gr.GridPosYTop(y+rowNum, height)), width, height, squares)
+	botRec := ui.Button(float32(gr.GridPosXLeft(x, width)), float32(gr.GridPosYBot(y+rowNum, height)), width, height, squares)
+	rl.DrawRectangleRec(topRec, rl.LightGray)
+	rl.DrawRectangleRec(botRec, rl.Gray)
+}
+
+// Draw row result text
+func DrawResultRowText(value1, value2 string, x, y, width, height, rowCount, fontSize int) {
+	rl.DrawText(value1, int32(gr.GridPosXLeft(x, width)+5), int32(gr.GridPosYTop(y+rowCount, height)), int32(fontSize), rl.Black)
+	rl.DrawText(value2, int32(gr.GridPosXLeft(x, width)+5), int32(gr.GridPosYBot(y+rowCount, height)), int32(fontSize), rl.Black)
+
+}

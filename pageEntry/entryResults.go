@@ -36,45 +36,28 @@ func HandleEntryPageResults(dGrid gr.DisplayGrid, records []enJson.Entries) {
 	var headerDivider rl.Rectangle = ui.HorizontalDivider(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYTop(6, height-1)), width, height, 9)
 	rl.DrawRectangleRec(headerDivider, rl.DarkGreen)
 
+	// Draw row backdrop
 	for i := 0; i < 6; i++ {
-		var resultDescTop rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYTop(6+i, height)), width, height, 3)
-		var resultAmtTop rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYTop(6+i, height)), width, height, 2)
-		var resultDateTop rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(6, width)), float32(gr.GridPosYTop(6+i, height)), width, height, 2)
-		var resultDescBot rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYBot(6+i, height)), width, height, 3)
-		var resultAmtBot rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYBot(6+i, height)), width, height, 2)
-		var resultDateBot rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(6, width)), float32(gr.GridPosYBot(6+i, height)), width, height, 2)
-		var resultActTop rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(8, width)), float32(gr.GridPosYTop(6+i, height)), width, height, 2)
-		var resultActBot rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(8, width)), float32(gr.GridPosYBot(6+i, height)), width, height, 2)
-		rl.DrawRectangleRec(resultDescBot, rl.LightGray)
-		rl.DrawRectangleRec(resultAmtBot, rl.LightGray)
-		rl.DrawRectangleRec(resultDateBot, rl.LightGray)
-		rl.DrawRectangleRec(resultDescTop, rl.DarkGray)
-		rl.DrawRectangleRec(resultAmtTop, rl.DarkGray)
-		rl.DrawRectangleRec(resultDateTop, rl.DarkGray)
-		rl.DrawRectangleRec(resultActTop, rl.DarkGray)
-		rl.DrawRectangleRec(resultActBot, rl.LightGray)
+		rendEl.DrawResultRowBackdrop(1, 6, i, 3, width, height)
+		rendEl.DrawResultRowBackdrop(4, 6, i, 2, width, height)
+		rendEl.DrawResultRowBackdrop(6, 6, i, 2, width, height)
+		rendEl.DrawResultRowBackdrop(8, 6, i, 2, width, height)
 	}
 
+	// Draw Row Text Value
 	var rowCount = 0
 	for j := 0; j <= 12; j += 2 {
 		if j > len(records)-1 {
 			break
 		}
-		var resultActTop rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(8, width)), float32(gr.GridPosYTop(6+rowCount, height)), width, height, 2)
-		var resultActBot rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(8, width)), float32(gr.GridPosYBot(6+rowCount, height)), width, height, 2)
 		strAmt1 := strconv.FormatFloat(float64(records[j].Amount), 'f', -1, 32)
-		rl.DrawText(records[j].Description, int32(gr.GridPosXLeft(1, width)+5), int32(gr.GridPosYTop(6+rowCount, height)), 28, rl.Black)
-		rl.DrawText(strAmt1, int32(gr.GridPosXLeft(4, width))+5, int32(gr.GridPosYTop(6+rowCount, height)), 28, rl.Black)
-		rl.DrawText(records[j].Date, int32(gr.GridPosXLeft(6, width))+5, int32(gr.GridPosYTop(6+rowCount, height)), 28, rl.Black)
-		//rl.DrawTextureEx(xButton, rl.Vector2{X: resultActTop.X, Y: resultActBot.Y}, 0, 100, rl.RayWhite)
-
+		strAmt2 := ""
 		if j+1 <= len(records)-1 {
-			strAmt2 := strconv.FormatFloat(float64(records[j+1].Amount), 'f', -1, 32)
-			rl.DrawText(records[j+1].Description, int32(gr.GridPosXLeft(1, width)+5), int32(gr.GridPosYBot(6+rowCount, height)), 28, rl.Black)
-			rl.DrawText(strAmt2, int32(gr.GridPosXLeft(4, width))+5, int32(gr.GridPosYBot(6+rowCount, height)), 28, rl.Black)
-			rl.DrawText(records[j+1].Date, int32(gr.GridPosXLeft(6, width))+5, int32(gr.GridPosYBot(6+rowCount, height)), 28, rl.Black)
-			rl.DrawTextureRec(xButton, resultActBot, rl.Vector2{X: resultActTop.X, Y: resultActBot.Y}, rl.RayWhite)
+			strAmt2 = strconv.FormatFloat(float64(records[j+1].Amount), 'f', -1, 32)
 		}
+		rendEl.DrawResultRowText(records[j].Description, strAmt2, 1, 6, width, height, rowCount, 28)
+		rendEl.DrawResultRowText(strAmt1, strAmt2, 4, 6, width, height, rowCount, 28)
+		rendEl.DrawResultRowText(records[j].Date, strAmt2, 6, 6, width, height, rowCount, 28)
 		rowCount++
 	}
 }
