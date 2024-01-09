@@ -6,6 +6,7 @@ import (
 	enJson "main/json"
 	"main/pageEntry"
 	entry "main/pageEntry"
+	color "main/theme"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
@@ -21,10 +22,12 @@ func main() {
 	rl.SetTargetFPS(60)
 	pageEntry.LoadTexture()
 	enJson.LoadEntries(&entries)
+	color.SetMajorFont()
+	color.SetMinorFont()
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
-		rl.ClearBackground(rl.Black)
+		rl.ClearBackground(color.PrimaryColor())
 		banner.DrawBanner((dGrid))
 		saved = entry.HandleEntryPageInput(dGrid)
 		entry.HandleEntryPageResults(dGrid, entries)

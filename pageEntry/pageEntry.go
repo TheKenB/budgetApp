@@ -6,6 +6,7 @@ import (
 	ui "main/inputs"
 	enJson "main/json"
 	rendEle "main/renderElements"
+	color "main/theme"
 	"strconv"
 	"unicode/utf8"
 
@@ -18,7 +19,7 @@ var dateText string = ""
 var curText ui.ActiveText = ui.ActiveText{Active: false, Pos: [2]int{0, 0}}
 var blinking bool = false
 var elapsedTime float32 = 0
-var addColor = rl.DarkGreen
+var addColor = color.MinorAColor()
 var descErr string = ""
 var amtErr string = ""
 var dateErr string = ""
@@ -40,13 +41,13 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 
 	//Date Field
 	var dateRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(7, width)), float32(gr.GridPosYBot(3, height)), width, height, 2), Text: &dateText}
-	rendEle.DrawInputs(dateRect, dateErr, "date")
+	rendEle.DrawInputs(dateRect, dateErr, "Date")
 
 	//Add Button
 	var addRect = ui.Button(float32(gr.GridPosXLeft(10, width)), float32(gr.GridPosYBot(3, height)), width, height, 1)
 
 	rl.DrawRectangleRec(addRect, addColor)
-	rl.DrawText("Add", int32(gr.GridPosTextXCent(10, width)), int32(gr.GridPosYBot(3, height)), 32, rl.White)
+	color.DrawMajor("Add", int32(gr.GridPosTextXCent(10, width)), int32(gr.GridPosYBot(3, height)), 32, color.MinorCColor())
 
 	// Check if user is in input boxes
 	inputRects = append(inputRects, entryDescriptRect, amountRect, dateRect)
@@ -82,7 +83,7 @@ func ClearInputs() {
 func HandleAddButton(rec rl.Rectangle) bool {
 	//Add button hover color indicator
 	if rl.CheckCollisionPointRec(rl.GetMousePosition(), rec) {
-		addColor = rl.Lime
+		addColor = color.MinorBColor()
 		if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 			descErr = errHand.EntryDescErr(descText)
 			amtErr = errHand.EntryAmtErr(amtText)
@@ -99,7 +100,7 @@ func HandleAddButton(rec rl.Rectangle) bool {
 			}
 		}
 	} else {
-		addColor = rl.DarkGreen
+		addColor = color.MinorAColor()
 		return false
 	}
 	return false
@@ -149,7 +150,7 @@ func HandleInputTyping(recs []ui.TextCollissionLocation) {
 
 				var textBuffer int32 = rl.MeasureText(*box.Text, 28) + 15
 				if blinking {
-					rl.DrawText("_", box.Location.ToInt32().X+textBuffer, box.Location.ToInt32().Y, 28, rl.Black)
+					color.DrawMajor("_", box.Location.ToInt32().X+textBuffer, box.Location.ToInt32().Y, 28, rl.Black)
 				}
 			}
 		}

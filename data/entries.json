@@ -18,5 +18,10 @@
   "Description": "Big Stuff",
   "Amount": 123.22,
   "Date": "20/20/2222"
+ },
+ {
+  "Description": "what",
+  "Amount": 222,
+  "Date": "10/10/1010"
  }
 ]

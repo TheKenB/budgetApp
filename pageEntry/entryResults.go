@@ -5,6 +5,7 @@ import (
 	ui "main/inputs"
 	enJson "main/json"
 	rendEl "main/renderElements"
+	color "main/theme"
 	"strconv"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -34,7 +35,7 @@ func HandleEntryPageResults(dGrid gr.DisplayGrid, records []enJson.Entries) {
 	rendEl.DrawResultHeader(8, 5, width, height, 2, "Actions", true)
 
 	var headerDivider rl.Rectangle = ui.HorizontalDivider(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYTop(6, height-1)), width, height, 9)
-	rl.DrawRectangleRec(headerDivider, rl.DarkGreen)
+	rl.DrawRectangleRec(headerDivider, color.MinorAColor())
 
 	// Draw row backdrop
 	for i := 0; i < 6; i++ {
