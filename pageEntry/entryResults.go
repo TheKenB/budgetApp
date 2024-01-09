@@ -2,6 +2,7 @@ package pageEntry
 
 import (
 	gr "main/grid"
+	icons "main/icons"
 	ui "main/inputs"
 	enJson "main/json"
 	rendEl "main/renderElements"
@@ -53,12 +54,18 @@ func HandleEntryPageResults(dGrid gr.DisplayGrid, records []enJson.Entries) {
 		}
 		strAmt1 := strconv.FormatFloat(float64(records[j].Amount), 'f', -1, 32)
 		strAmt2 := ""
+		doubleDraw := false
 		if j+1 <= len(records)-1 {
 			strAmt2 = strconv.FormatFloat(float64(records[j+1].Amount), 'f', -1, 32)
+			doubleDraw = true
 		}
 		rendEl.DrawResultRowText(records[j].Description, strAmt2, 1, 5, width, height, rowCount, 28)
 		rendEl.DrawResultRowText(strAmt1, strAmt2, 4, 5, width, height, rowCount, 28)
 		rendEl.DrawResultRowText(records[j].Date, strAmt2, 6, 5, width, height, rowCount, 28)
+
+		xButton := icons.XButtonTexture()
+
+		rendEl.DrawResultAction(xButton, 8, 5, width, height, rowCount, doubleDraw)
 		rowCount++
 	}
 }

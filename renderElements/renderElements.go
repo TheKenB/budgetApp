@@ -4,6 +4,7 @@ import (
 	gr "main/grid"
 	ui "main/inputs"
 	color "main/theme"
+	uiUtil "main/uiUtil"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
@@ -51,4 +52,15 @@ func DrawResultRowBackdrop(x, y, rowNum, squares, width, height int) {
 func DrawResultRowText(value1, value2 string, x, y, width, height, rowCount, fontSize int) {
 	color.DrawMinorText(value1, int32(gr.GridPosXLeft(x, width)+5), int32(gr.GridPosYTop(y+rowCount, height)), int32(fontSize), rl.Black)
 	color.DrawMinorText(value2, int32(gr.GridPosXLeft(x, width)+5), int32(gr.GridPosYBot(y+rowCount, height)), int32(fontSize), rl.Black)
+}
+
+// Draw row action button
+func DrawResultAction(icon rl.Texture2D, x, y, width, height, rowCount int, doubleDraw bool) {
+
+	posVectorTop := rl.Vector2{X: float32(gr.GridPosXLeft(x, width) + 5), Y: float32(gr.GridPosYTop(y+rowCount, height) + 5)}
+	posVectorBot := rl.Vector2{X: float32(gr.GridPosXLeft(x, width) + 5), Y: float32(gr.GridPosYBot(y+rowCount, height) + 5)}
+	rl.DrawTextureEx(icon, posVectorTop, 0, 0.3, uiUtil.IsHoverRec(rl.Rectangle{X: posVectorTop.X, Y: posVectorTop.Y, Width: float32(width), Height: float32(height)}))
+	if doubleDraw {
+		rl.DrawTextureEx(icon, posVectorBot, 0, 0.5, uiUtil.IsHoverRec(rl.Rectangle{X: posVectorBot.X, Y: posVectorBot.Y, Width: float32(width), Height: float32(height)}))
+	}
 }

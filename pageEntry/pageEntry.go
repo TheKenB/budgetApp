@@ -34,17 +34,17 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 	//Description Field
 	var entryDescriptRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYBot(2, height)), width, height, 3), Text: &descText}
 	rendEle.DrawInputs(entryDescriptRect, "Entry Description")
-	rendEle.DrawInputErr(1, 4, width, height, descErr, color.DangerColor(), false)
+	rendEle.DrawInputErr(1, 3, width, height, descErr, color.DangerColor(), false)
 
 	//Amount Field
 	var amountRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(5, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &amtText}
 	rendEle.DrawInputs(amountRect, "Amount")
-	rendEle.DrawInputErr(5, 4, width, height, amtErr, color.DangerColor(), false)
+	rendEle.DrawInputErr(5, 3, width, height, amtErr, color.DangerColor(), false)
 
 	//Date Field
 	var dateRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(7, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &dateText}
 	rendEle.DrawInputs(dateRect, "Date")
-	rendEle.DrawInputErr(7, 4, width, height, dateErr, color.DangerColor(), true)
+	rendEle.DrawInputErr(7, 3, width, height, dateErr, color.DangerColor(), true)
 
 	//Add Button
 	var addRect = ui.Button(float32(gr.GridPosXLeft(10, width)), float32(gr.GridPosYBot(2, height)), width, height, 1)

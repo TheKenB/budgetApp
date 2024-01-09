@@ -3,6 +3,7 @@ package main
 import (
 	banner "main/banner"
 	gr "main/grid"
+	icons "main/icons"
 	enJson "main/json"
 	"main/pageEntry"
 	entry "main/pageEntry"
@@ -24,6 +25,7 @@ func main() {
 	enJson.LoadEntries(&entries)
 	color.SetMajorFont()
 	color.SetMinorFont()
+	icons.SetXIcon()
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
