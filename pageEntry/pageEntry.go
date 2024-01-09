@@ -1,6 +1,7 @@
 package pageEntry
 
 import (
+	"fmt"
 	errHand "main/errorHandle"
 	gr "main/grid"
 	ui "main/inputs"
@@ -98,6 +99,7 @@ func HandleAddButton(rec rl.Rectangle) bool {
 				}
 				var newEntry enJson.Entries = enJson.Entries{Description: descText, Amount: float32(amt), Date: dateText}
 				enJson.SaveEntry(newEntry)
+				fmt.Println(newEntry)
 				ClearInputs()
 				return true
 			}

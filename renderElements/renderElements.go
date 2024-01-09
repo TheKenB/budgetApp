@@ -59,8 +59,10 @@ func DrawResultAction(icon rl.Texture2D, x, y, width, height, rowCount int, doub
 
 	posVectorTop := rl.Vector2{X: float32(gr.GridPosXLeft(x, width) + 5), Y: float32(gr.GridPosYTop(y+rowCount, height) + 5)}
 	posVectorBot := rl.Vector2{X: float32(gr.GridPosXLeft(x, width) + 5), Y: float32(gr.GridPosYBot(y+rowCount, height) + 5)}
-	rl.DrawTextureEx(icon, posVectorTop, 0, 0.3, uiUtil.IsHoverRec(rl.Rectangle{X: posVectorTop.X, Y: posVectorTop.Y, Width: float32(width), Height: float32(height)}))
+	topHoverState := uiUtil.IsHoverRec(rl.Rectangle{X: posVectorTop.X, Y: posVectorTop.Y, Width: float32(width / 4), Height: float32(height / 2)})
+	botHoverState := uiUtil.IsHoverRec(rl.Rectangle{X: posVectorBot.X, Y: posVectorBot.Y, Width: float32(width / 4), Height: float32(height / 2)})
+	rl.DrawTextureEx(icon, posVectorTop, 0, 0.5, uiUtil.HoverBright(topHoverState))
 	if doubleDraw {
-		rl.DrawTextureEx(icon, posVectorBot, 0, 0.5, uiUtil.IsHoverRec(rl.Rectangle{X: posVectorBot.X, Y: posVectorBot.Y, Width: float32(width), Height: float32(height)}))
+		rl.DrawTextureEx(icon, posVectorBot, 0, 0.5, uiUtil.HoverBright(botHoverState))
 	}
 }

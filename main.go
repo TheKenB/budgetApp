@@ -37,13 +37,13 @@ func main() {
 			enJson.LoadEntries(&entries)
 			saved = false
 		}
-		//		Draw Grid
-		// for i := 0; i < dGrid.Rows; i++ {
-		// 	rl.DrawLine(0, int32(i*dGrid.Height), int32(res.x), int32(i*dGrid.Height), rl.Blue)
-		// }
-		// for j := 0; j < dGrid.Columns; j++ {
-		// 	rl.DrawLine(int32(j*dGrid.Width), 0, int32(j*dGrid.Width), int32(res.y), rl.Blue)
-		// }
+		//				Draw Grid
+		for i := 0; i < dGrid.Rows; i++ {
+			rl.DrawLine(0, int32(i*dGrid.Height), int32(res.x), int32(i*dGrid.Height), rl.Blue)
+		}
+		for j := 0; j < dGrid.Columns; j++ {
+			rl.DrawLine(int32(j*dGrid.Width), 0, int32(j*dGrid.Width), int32(res.y), rl.Blue)
+		}
 
 		if rl.IsKeyPressed(rl.KeySemicolon) {
 			res = res1080()

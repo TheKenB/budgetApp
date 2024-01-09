@@ -13,5 +13,45 @@
   "Description": "Will This Explode",
   "Amount": 11,
   "Date": "10/10/2021"
+ },
+ {
+  "Description": "Reall Big Expense",
+  "Amount": 20.11,
+  "Date": "10/10/2011"
+ },
+ {
+  "Description": "Test",
+  "Amount": 202020,
+  "Date": "2020/11/11"
+ },
+ {
+  "Description": "TEstsetset",
+  "Amount": 20,
+  "Date": "10/10/10"
+ },
+ {
+  "Description": "Test",
+  "Amount": 22,
+  "Date": "10/10/2021"
+ },
+ {
+  "Description": "testest",
+  "Amount": 22,
+  "Date": "10/10/2011"
+ },
+ {
+  "Description": "test",
+  "Amount": 22,
+  "Date": "10/10/2022"
+ },
+ {
+  "Description": "Test",
+  "Amount": 99,
+  "Date": "10/10/2011"
+ },
+ {
+  "Description": "testing",
+  "Amount": 88,
+  "Date": "10/10/2011"
  }
 ]

@@ -1,20 +1,22 @@
 package uiUtil
 
 import (
-	"fmt"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 // Return color mod for hover/no hover
-func IsHoverRec(uiRec rl.Rectangle) rl.Color {
-	fmt.Println(uiRec)
-	fmt.Println(rl.GetMousePosition())
-	fmt.Println("----")
+func IsHoverRec(uiRec rl.Rectangle) bool {
 	if rl.CheckCollisionPointRec(rl.GetMousePosition(), uiRec) {
-
-		return rl.DarkGray
+		return true
 	} else {
+		return false
+	}
+}
+
+func HoverBright(isHover bool) rl.Color {
+	if isHover {
 		return rl.RayWhite
+	} else {
+		return rl.Gray
 	}
 }
