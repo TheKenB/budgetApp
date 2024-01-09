@@ -23,5 +23,15 @@
   "Description": "what",
   "Amount": 222,
   "Date": "10/10/1010"
+ },
+ {
+  "Description": "Look at them",
+  "Amount": 3939,
+  "Date": "10/10/2021"
+ },
+ {
+  "Description": "Takeout",
+  "Amount": 10,
+  "Date": "10/03/2021"
  }
 ]

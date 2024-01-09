@@ -32,22 +32,25 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 	elapsedTime += rl.GetFrameTime()
 	// Draw Inputs
 	//Description Field
-	var entryDescriptRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYBot(3, height)), width, height, 3), Text: &descText}
-	rendEle.DrawInputs(entryDescriptRect, descErr, "Entry Description")
+	var entryDescriptRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYBot(2, height)), width, height, 3), Text: &descText}
+	rendEle.DrawInputs(entryDescriptRect, "Entry Description")
+	rendEle.DrawInputErr(1, 4, width, height, descErr, color.DangerColor(), false)
 
 	//Amount Field
-	var amountRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(5, width)), float32(gr.GridPosYBot(3, height)), width, height, 2), Text: &amtText}
-	rendEle.DrawInputs(amountRect, amtErr, "Amount")
+	var amountRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(5, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &amtText}
+	rendEle.DrawInputs(amountRect, "Amount")
+	rendEle.DrawInputErr(5, 4, width, height, amtErr, color.DangerColor(), false)
 
 	//Date Field
-	var dateRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(7, width)), float32(gr.GridPosYBot(3, height)), width, height, 2), Text: &dateText}
-	rendEle.DrawInputs(dateRect, dateErr, "Date")
+	var dateRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(7, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &dateText}
+	rendEle.DrawInputs(dateRect, "Date")
+	rendEle.DrawInputErr(7, 4, width, height, dateErr, color.DangerColor(), true)
 
 	//Add Button
-	var addRect = ui.Button(float32(gr.GridPosXLeft(10, width)), float32(gr.GridPosYBot(3, height)), width, height, 1)
+	var addRect = ui.Button(float32(gr.GridPosXLeft(10, width)), float32(gr.GridPosYBot(2, height)), width, height, 1)
 
 	rl.DrawRectangleRec(addRect, addColor)
-	color.DrawMajor("Add", int32(gr.GridPosTextXCent(10, width)), int32(gr.GridPosYBot(3, height)), 32, color.MinorCColor())
+	color.DrawMajorText("Add", int32(gr.GridPosTextXCent(10, width)), int32(gr.GridPosYBot(2, height)), 32, color.MinorCColor())
 
 	// Check if user is in input boxes
 	inputRects = append(inputRects, entryDescriptRect, amountRect, dateRect)
@@ -150,7 +153,7 @@ func HandleInputTyping(recs []ui.TextCollissionLocation) {
 
 				var textBuffer int32 = rl.MeasureText(*box.Text, 28) + 15
 				if blinking {
-					color.DrawMajor("_", box.Location.ToInt32().X+textBuffer, box.Location.ToInt32().Y, 28, rl.Black)
+					color.DrawMajorText("_", box.Location.ToInt32().X+textBuffer, box.Location.ToInt32().Y, 28, rl.Black)
 				}
 			}
 		}

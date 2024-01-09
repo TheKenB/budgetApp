@@ -23,26 +23,26 @@ func HandleEntryPageResults(dGrid gr.DisplayGrid, records []enJson.Entries) {
 	elapsedTime += rl.GetFrameTime()
 	// Draw Header
 	//Description Header
-	rendEl.DrawResultHeader(1, 5, width, height, 3, "Description", false)
+	rendEl.DrawResultHeader(1, 4, width, height, 3, "Description", false)
 
 	//Amount Header
-	rendEl.DrawResultHeader(4, 5, width, height, 2, "Amount", false)
+	rendEl.DrawResultHeader(4, 4, width, height, 2, "Amount", false)
 
 	//Date Header
-	rendEl.DrawResultHeader(6, 5, width, height, 2, "Date", false)
+	rendEl.DrawResultHeader(6, 4, width, height, 2, "Date", false)
 
 	//Action Header
-	rendEl.DrawResultHeader(8, 5, width, height, 2, "Actions", true)
+	rendEl.DrawResultHeader(8, 4, width, height, 2, "Actions", true)
 
-	var headerDivider rl.Rectangle = ui.HorizontalDivider(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYTop(6, height-1)), width, height, 9)
+	var headerDivider rl.Rectangle = ui.HorizontalDivider(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYTop(5, height-1)), width, height, 9)
 	rl.DrawRectangleRec(headerDivider, color.MinorAColor())
 
 	// Draw row backdrop
 	for i := 0; i < 6; i++ {
-		rendEl.DrawResultRowBackdrop(1, 6, i, 3, width, height)
-		rendEl.DrawResultRowBackdrop(4, 6, i, 2, width, height)
-		rendEl.DrawResultRowBackdrop(6, 6, i, 2, width, height)
-		rendEl.DrawResultRowBackdrop(8, 6, i, 2, width, height)
+		rendEl.DrawResultRowBackdrop(1, 5, i, 3, width, height)
+		rendEl.DrawResultRowBackdrop(4, 5, i, 2, width, height)
+		rendEl.DrawResultRowBackdrop(6, 5, i, 2, width, height)
+		rendEl.DrawResultRowBackdrop(8, 5, i, 2, width, height)
 	}
 
 	// Draw Row Text Value
@@ -56,9 +56,9 @@ func HandleEntryPageResults(dGrid gr.DisplayGrid, records []enJson.Entries) {
 		if j+1 <= len(records)-1 {
 			strAmt2 = strconv.FormatFloat(float64(records[j+1].Amount), 'f', -1, 32)
 		}
-		rendEl.DrawResultRowText(records[j].Description, strAmt2, 1, 6, width, height, rowCount, 28)
-		rendEl.DrawResultRowText(strAmt1, strAmt2, 4, 6, width, height, rowCount, 28)
-		rendEl.DrawResultRowText(records[j].Date, strAmt2, 6, 6, width, height, rowCount, 28)
+		rendEl.DrawResultRowText(records[j].Description, strAmt2, 1, 5, width, height, rowCount, 28)
+		rendEl.DrawResultRowText(strAmt1, strAmt2, 4, 5, width, height, rowCount, 28)
+		rendEl.DrawResultRowText(records[j].Date, strAmt2, 6, 5, width, height, rowCount, 28)
 		rowCount++
 	}
 }

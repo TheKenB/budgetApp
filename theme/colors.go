@@ -27,16 +27,21 @@ func MinorBColor() rl.Color {
 	return rl.NewColor(178, 197, 178, 255)
 }
 
-// grey green
+// Gray green
 func MinorCColor() rl.Color {
 	return rl.NewColor(213, 221, 213, 255)
 }
 
-func DrawMajor(text string, posX int32, posY int32, fontSize int32, col rl.Color) {
+// Red danger
+func DangerColor() rl.Color {
+	return rl.NewColor(204, 51, 0, 255)
+}
+
+func DrawMajorText(text string, posX int32, posY int32, fontSize int32, col rl.Color) {
 	rl.DrawTextEx(fontMajor, text, rl.Vector2{X: float32(posX), Y: float32(posY)}, float32(fontSize), 3, col)
 }
 
-func DrawMinor(text string, posX int32, posY int32, fontSize int32, col rl.Color) {
+func DrawMinorText(text string, posX int32, posY int32, fontSize int32, col rl.Color) {
 	rl.DrawTextEx(fontMinor, text, rl.Vector2{X: float32(posX), Y: float32(posY)}, float32(fontSize), 3, col)
 }
 
