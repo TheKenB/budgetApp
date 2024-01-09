@@ -4,6 +4,7 @@ import (
 	banner "main/banner"
 	gr "main/grid"
 	enJson "main/json"
+	"main/pageEntry"
 	entry "main/pageEntry"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -18,7 +19,7 @@ func main() {
 
 	rl.InitWindow(int32(res.x), int32(res.y), "budgeting")
 	rl.SetTargetFPS(60)
-
+	pageEntry.LoadTexture()
 	enJson.LoadEntries(&entries)
 
 	for !rl.WindowShouldClose() {

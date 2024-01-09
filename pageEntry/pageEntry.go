@@ -5,6 +5,7 @@ import (
 	gr "main/grid"
 	ui "main/inputs"
 	enJson "main/json"
+	rendEle "main/renderElements"
 	"strconv"
 	"unicode/utf8"
 
@@ -30,25 +31,16 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 	elapsedTime += rl.GetFrameTime()
 	// Draw Inputs
 	//Description Field
-	rl.DrawText("Entry Description", int32(gr.GridPosXLeft(1, width)), int32(gr.GridPosYTop(3, height)), 32, rl.DarkGreen)
 	var entryDescriptRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYBot(3, height)), width, height, 3), Text: &descText}
-	rl.DrawRectangleRec(entryDescriptRect.Location, rl.LightGray)
-	rl.DrawText(descText, int32(entryDescriptRect.Location.X+15), int32(entryDescriptRect.Location.Y), 28, rl.Black)
-	rl.DrawText(descErr, int32(entryDescriptRect.Location.X+10), int32(gr.GridPosYTop(4, height)), 24, rl.Red)
+	rendEle.DrawInputs(entryDescriptRect, descErr, "Entry Description")
 
 	//Amount Field
-	rl.DrawText("Amount", int32(gr.GridPosXLeft(5, width)), int32(gr.GridPosYTop(3, height)), 32, rl.DarkGreen)
 	var amountRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(5, width)), float32(gr.GridPosYBot(3, height)), width, height, 2), Text: &amtText}
-	rl.DrawRectangleRec(amountRect.Location, rl.LightGray)
-	rl.DrawText(amtText, int32(amountRect.Location.X+15), int32(amountRect.Location.Y), 28, rl.Black)
-	rl.DrawText(amtErr, int32(amountRect.Location.X+10), int32(gr.GridPosYTop(4, height)), 24, rl.Red)
+	rendEle.DrawInputs(amountRect, amtErr, "Amount")
 
 	//Date Field
-	rl.DrawText("Date", int32(gr.GridPosXLeft(7, width)), int32(gr.GridPosYTop(3, height)), 32, rl.DarkGreen)
 	var dateRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(7, width)), float32(gr.GridPosYBot(3, height)), width, height, 2), Text: &dateText}
-	rl.DrawRectangleRec(dateRect.Location, rl.LightGray)
-	rl.DrawText(dateText, int32(dateRect.Location.X+15), int32(dateRect.Location.Y), 28, rl.Black)
-	rl.DrawText(dateErr, int32(dateRect.Location.X+10), int32(gr.GridPosYBot(4, height)), 24, rl.Red)
+	rendEle.DrawInputs(dateRect, dateErr, "date")
 
 	//Add Button
 	var addRect = ui.Button(float32(gr.GridPosXLeft(10, width)), float32(gr.GridPosYBot(3, height)), width, height, 1)
@@ -79,81 +71,6 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 		rl.SetMouseCursor(rl.MouseCursorArrow)
 	}
 	return saved
-}
-
-func HandleEntryPageResults(dGrid gr.DisplayGrid, records []enJson.Entries) {
-	var height int = dGrid.Height
-	var width int = dGrid.Width
-	//	var inputRects []ui.TextCollissionLocation
-
-	elapsedTime += rl.GetFrameTime()
-	// Draw Header
-	//Description Header
-	var entryDescriptRect rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYBot(5, height-1)), width, height, 3)
-	var descColumnDiv rl.Rectangle = ui.HeaderDivider(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYBot(5, height-1)), width, height, 3)
-	rl.DrawRectangleRec(entryDescriptRect, rl.DarkGray)
-	rl.DrawRectangleRec(descColumnDiv, rl.DarkGreen)
-	rl.DrawText("Description", int32(entryDescriptRect.X+10), int32(entryDescriptRect.Y), 28, rl.White)
-
-	//Amount Header
-	var amountRect rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYBot(5, height-1)), width, height, 2)
-	var amountColumnDiv rl.Rectangle = ui.HeaderDivider(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYBot(5, height-1)), width, height, 2)
-	rl.DrawRectangleRec(amountRect, rl.DarkGray)
-	rl.DrawRectangleRec(amountColumnDiv, rl.DarkGreen)
-	rl.DrawText("Amount", int32(amountRect.X+10), int32(amountRect.Y), 28, rl.White)
-
-	//Date Header
-	var dateRect rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(6, width)), float32(gr.GridPosYBot(5, height-1)), width, height, 2)
-	var datecolumnDiv rl.Rectangle = ui.HeaderDivider(float32(gr.GridPosXLeft(6, width)), float32(gr.GridPosYBot(5, height-1)), width, height-1, 2)
-	rl.DrawRectangleRec(dateRect, rl.DarkGray)
-	rl.DrawRectangleRec(datecolumnDiv, rl.DarkGreen)
-	rl.DrawText("Date", int32(dateRect.X+10), int32(dateRect.Y), 28, rl.White)
-
-	//Action Header
-	var actionRect rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(8, width)), float32(gr.GridPosYBot(5, height-1)), width, height, 2)
-	rl.DrawRectangleRec(actionRect, rl.DarkGray)
-	rl.DrawText("Actions", int32(actionRect.X+10), int32(actionRect.Y), 28, rl.White)
-
-	var headerDivider rl.Rectangle = ui.HorizontalDivider(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYTop(6, height-1)), width, height, 9)
-	rl.DrawRectangleRec(headerDivider, rl.DarkGreen)
-
-	for i := 0; i < 6; i++ {
-		var resultDescTop rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYTop(6+i, height)), width, height, 3)
-		var resultAmtTop rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYTop(6+i, height)), width, height, 2)
-		var resultDateTop rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(6, width)), float32(gr.GridPosYTop(6+i, height)), width, height, 2)
-		var resultDescBot rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(1, width)), float32(gr.GridPosYBot(6+i, height)), width, height, 3)
-		var resultAmtBot rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYBot(6+i, height)), width, height, 2)
-		var resultDateBot rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(6, width)), float32(gr.GridPosYBot(6+i, height)), width, height, 2)
-		var resultActTop rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(8, width)), float32(gr.GridPosYTop(6+i, height)), width, height, 2)
-		var resultActBot rl.Rectangle = ui.Button(float32(gr.GridPosXLeft(8, width)), float32(gr.GridPosYBot(6+i, height)), width, height, 2)
-		rl.DrawRectangleRec(resultDescBot, rl.LightGray)
-		rl.DrawRectangleRec(resultAmtBot, rl.LightGray)
-		rl.DrawRectangleRec(resultDateBot, rl.LightGray)
-		rl.DrawRectangleRec(resultDescTop, rl.DarkGray)
-		rl.DrawRectangleRec(resultAmtTop, rl.DarkGray)
-		rl.DrawRectangleRec(resultDateTop, rl.DarkGray)
-		rl.DrawRectangleRec(resultActTop, rl.DarkGray)
-		rl.DrawRectangleRec(resultActBot, rl.LightGray)
-	}
-
-	var rowCount = 0
-
-	for j := 0; j <= 12; j += 2 {
-		if j > len(records)-1 {
-			break
-		}
-		strAmt1 := strconv.FormatFloat(float64(records[j].Amount), 'f', -1, 32)
-		rl.DrawText(records[j].Description, int32(gr.GridPosXLeft(1, width)+5), int32(gr.GridPosYTop(6+rowCount, height)), 28, rl.Black)
-		rl.DrawText(strAmt1, int32(gr.GridPosXLeft(4, width))+5, int32(gr.GridPosYTop(6+rowCount, height)), 28, rl.Black)
-		rl.DrawText(records[j].Date, int32(gr.GridPosXLeft(6, width))+5, int32(gr.GridPosYTop(6+rowCount, height)), 28, rl.Black)
-		if j+1 <= len(records)-1 {
-			strAmt2 := strconv.FormatFloat(float64(records[j+1].Amount), 'f', -1, 32)
-			rl.DrawText(records[j+1].Description, int32(gr.GridPosXLeft(1, width)+5), int32(gr.GridPosYBot(6+rowCount, height)), 28, rl.Black)
-			rl.DrawText(strAmt2, int32(gr.GridPosXLeft(4, width))+5, int32(gr.GridPosYBot(6+rowCount, height)), 28, rl.Black)
-			rl.DrawText(records[j+1].Date, int32(gr.GridPosXLeft(6, width))+5, int32(gr.GridPosYBot(6+rowCount, height)), 28, rl.Black)
-		}
-		rowCount++
-	}
 }
 
 func ClearInputs() {
