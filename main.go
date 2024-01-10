@@ -15,7 +15,6 @@ import (
 func main() {
 	var res resolution = res720()
 	dGrid := gr.NewGrid([2]int{res.x, res.y})
-	//var font rl.Font = rl.LoadFontEx("fonts/Louis George Cafe Bold.ttf", 50, nil)
 	var entries []enJson.Entries
 	var saved bool = false
 

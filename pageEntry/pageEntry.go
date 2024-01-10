@@ -97,7 +97,7 @@ func HandleAddButton(rec rl.Rectangle) bool {
 				if err != nil {
 					panic(err)
 				}
-				var newEntry enJson.Entries = enJson.Entries{Description: descText, Amount: float32(amt), Date: dateText}
+				var newEntry enJson.Entries = enJson.Entries{Description: descText, Amount: float32(amt), Date: dateText, Index: 0}
 				enJson.SaveEntry(newEntry)
 				ClearInputs()
 				return true
@@ -152,9 +152,9 @@ func HandleInputTyping(recs []ui.TextCollissionLocation) {
 					}
 				}
 
-				var textBuffer int32 = rl.MeasureText(*box.Text, 28) + 15
+				var textBuffer rl.Vector2 = rl.MeasureTextEx(color.FontMajor, *box.Text, 32, 2)
 				if blinking {
-					color.DrawMajorText("_", box.Location.ToInt32().X+textBuffer, box.Location.ToInt32().Y, 28, rl.Black)
+					color.DrawMajorText("_", int32(box.Location.X)+int32(textBuffer.X)+15, box.Location.ToInt32().Y, 28, rl.Black)
 				}
 			}
 		}

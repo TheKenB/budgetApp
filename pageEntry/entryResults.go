@@ -7,6 +7,7 @@ import (
 	enJson "main/json"
 	rendEl "main/renderElements"
 	color "main/theme"
+	"main/uiUtil"
 	"strconv"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -70,6 +71,21 @@ func HandleEntryPageResults(dGrid gr.DisplayGrid, records []enJson.Entries) {
 		xButton := icons.XButtonTexture()
 
 		rendEl.DrawResultAction(xButton, 8, 5, width, height, rowCount, doubleDraw)
+		DeleteRecordCheck(8, 5, width, height, rowCount, doubleDraw, records[j])
 		rowCount++
+	}
+}
+
+func DeleteRecordCheck(x, y, width, height, rowCount int, doubleDraw bool, record enJson.Entries) {
+	posVectorTop := rl.Vector2{X: float32(gr.GridPosXLeft(x, width) + 5), Y: float32(gr.GridPosYTop(y+rowCount, height) + 5)}
+	posVectorBot := rl.Vector2{X: float32(gr.GridPosXLeft(x, width) + 5), Y: float32(gr.GridPosYBot(y+rowCount, height) + 5)}
+	topHoverState := uiUtil.IsHoverRec(rl.Rectangle{X: posVectorTop.X, Y: posVectorTop.Y, Width: float32(width / 4), Height: float32(height / 2)})
+	botHoverState := uiUtil.IsHoverRec(rl.Rectangle{X: posVectorBot.X, Y: posVectorBot.Y, Width: float32(width / 4), Height: float32(height / 2)})
+	if topHoverState && rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+		if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+			enJson.DeleteEntry(record)
+		}
+	} else if botHoverState && rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+		enJson.DeleteEntry((record))
 	}
 }

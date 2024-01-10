@@ -4,8 +4,8 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-var fontMajor rl.Font
-var fontMinor rl.Font
+var FontMajor rl.Font
+var FontMinor rl.Font
 
 // Dark Green
 func PrimaryColor() rl.Color {
@@ -38,17 +38,17 @@ func DangerColor() rl.Color {
 }
 
 func DrawMajorText(text string, posX int32, posY int32, fontSize int32, col rl.Color) {
-	rl.DrawTextEx(fontMajor, text, rl.Vector2{X: float32(posX), Y: float32(posY)}, float32(fontSize), 3, col)
+	rl.DrawTextEx(FontMajor, text, rl.Vector2{X: float32(posX), Y: float32(posY)}, float32(fontSize), 3, col)
 }
 
 func DrawMinorText(text string, posX int32, posY int32, fontSize int32, col rl.Color) {
-	rl.DrawTextEx(fontMinor, text, rl.Vector2{X: float32(posX), Y: float32(posY)}, float32(fontSize), 3, col)
+	rl.DrawTextEx(FontMinor, text, rl.Vector2{X: float32(posX), Y: float32(posY)}, float32(fontSize), 3, col)
 }
 
 func SetMajorFont() {
-	fontMajor = rl.LoadFontEx("fonts/RobotoSlabMedium.ttf", 42, nil)
+	FontMajor = rl.LoadFontEx("fonts/RobotoSlabMedium.ttf", 42, nil)
 }
 
 func SetMinorFont() {
-	fontMinor = rl.LoadFontEx("fonts/RobotoSlabLight.ttf", 42, nil)
+	FontMinor = rl.LoadFontEx("fonts/RobotoSlabLight.ttf", 42, nil)
 }
