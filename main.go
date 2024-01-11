@@ -2,9 +2,9 @@ package main
 
 import (
 	banner "main/banner"
-	"main/entryPage/pageEntry"
 	gr "main/grid"
 	icons "main/icons"
+	entryPage "main/pages/entryPage"
 	color "main/theme"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -16,7 +16,7 @@ func main() {
 
 	rl.InitWindow(int32(res.x), int32(res.y), "budgeting")
 	rl.SetTargetFPS(60)
-	pageEntry.LoadTexture()
+	entryPage.LoadTexture()
 	color.SetMajorFont()
 	color.SetMinorFont()
 	icons.SetXIcon()
@@ -24,8 +24,8 @@ func main() {
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		rl.ClearBackground(color.PrimaryColor())
-		banner.DrawBanner((dGrid))
-		pageEntry.HandlePageEntry(dGrid)
+		banner.DrawBanner(dGrid)
+		// entryPage.HandlePageEntry(dGrid)
 
 		//				Draw Grid
 		// for i := 0; i < dGrid.Rows; i++ {
