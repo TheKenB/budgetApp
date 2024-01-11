@@ -2,11 +2,9 @@ package main
 
 import (
 	banner "main/banner"
+	"main/entryPage/pageEntry"
 	gr "main/grid"
 	icons "main/icons"
-	enJson "main/json"
-	"main/pageEntry"
-	entry "main/pageEntry"
 	color "main/theme"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -15,13 +13,10 @@ import (
 func main() {
 	var res resolution = res720()
 	dGrid := gr.NewGrid([2]int{res.x, res.y})
-	var entries []enJson.Entries
-	var saved bool = false
 
 	rl.InitWindow(int32(res.x), int32(res.y), "budgeting")
 	rl.SetTargetFPS(60)
 	pageEntry.LoadTexture()
-	enJson.LoadEntries(&entries)
 	color.SetMajorFont()
 	color.SetMinorFont()
 	icons.SetXIcon()
@@ -30,12 +25,8 @@ func main() {
 		rl.BeginDrawing()
 		rl.ClearBackground(color.PrimaryColor())
 		banner.DrawBanner((dGrid))
-		saved = entry.HandleEntryPageInput(dGrid)
-		entry.HandleEntryPageResults(dGrid, entries)
-		if saved {
-			enJson.LoadEntries(&entries)
-			saved = false
-		}
+		pageEntry.HandlePageEntry(dGrid)
+
 		//				Draw Grid
 		// for i := 0; i < dGrid.Rows; i++ {
 		// 	rl.DrawLine(0, int32(i*dGrid.Height), int32(res.x), int32(i*dGrid.Height), rl.Blue)
@@ -56,7 +47,5 @@ func main() {
 		}
 		rl.EndDrawing()
 	}
-
 	rl.CloseWindow()
-
 }

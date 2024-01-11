@@ -75,9 +75,9 @@ func DeleteEntry(newD Entries) {
 		panic(err)
 	}
 
-	for _, val := range records {
+	for i, val := range records {
 		if newD.Index == val.Index {
-			records = append(records[:val.Index], records[val.Index+1:]...)
+			records = append(records[:i], records[i+1:]...)
 		}
 	}
 	newRec, err := json.MarshalIndent(records, "", " ")

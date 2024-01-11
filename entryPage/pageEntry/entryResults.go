@@ -19,9 +19,10 @@ func LoadTexture() {
 	xButton = rl.LoadTexture("images/xIcon.png")
 }
 
-func HandleEntryPageResults(dGrid gr.DisplayGrid, records []enJson.Entries) {
+func HandleEntryPageResults(dGrid gr.DisplayGrid, records []enJson.Entries) bool {
 	var height int = dGrid.Height
 	var width int = dGrid.Width
+	var listChange bool = false
 	elapsedTime += rl.GetFrameTime()
 	// Draw Header
 	//Description Header
@@ -71,21 +72,28 @@ func HandleEntryPageResults(dGrid gr.DisplayGrid, records []enJson.Entries) {
 		xButton := icons.XButtonTexture()
 
 		rendEl.DrawResultAction(xButton, 8, 5, width, height, rowCount, doubleDraw)
-		DeleteRecordCheck(8, 5, width, height, rowCount, doubleDraw, records[j])
+		posVectorTop := rl.Vector2{X: float32(gr.GridPosXLeft(8, width) + 5), Y: float32(gr.GridPosYTop(5+rowCount, height) + 5)}
+		posVectorBot := rl.Vector2{X: float32(gr.GridPosXLeft(8, width) + 5), Y: float32(gr.GridPosYBot(5+rowCount, height) + 5)}
+		listChange = DeleteRecordCheck(width, height, rowCount, posVectorTop, records[j])
+		if !listChange && doubleDraw {
+			listChange = DeleteRecordCheck(width, height, rowCount, posVectorBot, records[j+1])
+		}
+		if listChange {
+			return listChange
+		}
 		rowCount++
 	}
+	return listChange
 }
 
-func DeleteRecordCheck(x, y, width, height, rowCount int, doubleDraw bool, record enJson.Entries) {
-	posVectorTop := rl.Vector2{X: float32(gr.GridPosXLeft(x, width) + 5), Y: float32(gr.GridPosYTop(y+rowCount, height) + 5)}
-	posVectorBot := rl.Vector2{X: float32(gr.GridPosXLeft(x, width) + 5), Y: float32(gr.GridPosYBot(y+rowCount, height) + 5)}
-	topHoverState := uiUtil.IsHoverRec(rl.Rectangle{X: posVectorTop.X, Y: posVectorTop.Y, Width: float32(width / 4), Height: float32(height / 2)})
-	botHoverState := uiUtil.IsHoverRec(rl.Rectangle{X: posVectorBot.X, Y: posVectorBot.Y, Width: float32(width / 4), Height: float32(height / 2)})
+func DeleteRecordCheck(width, height, rowCount int, vectorLoc rl.Vector2, record enJson.Entries) bool {
+	recDeleted := false
+	topHoverState := uiUtil.IsHoverRec(rl.Rectangle{X: vectorLoc.X, Y: vectorLoc.Y, Width: float32(width / 4), Height: float32(height / 2)})
 	if topHoverState && rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 		if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 			enJson.DeleteEntry(record)
+			recDeleted = true
 		}
-	} else if botHoverState && rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-		enJson.DeleteEntry((record))
 	}
+	return recDeleted
 }
