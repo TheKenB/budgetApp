@@ -51,7 +51,7 @@ func SaveEntry(newD Entries) {
 	newIndex := GetNextIndex("entries")
 
 	newD.Index = newIndex
-	records = append(records, newD)
+	records = append([]Entries{newD}, records...)
 
 	b, err := json.MarshalIndent(records, "", " ")
 
