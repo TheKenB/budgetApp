@@ -12,7 +12,14 @@ func EntryDescErr(desc string) string {
 	} else {
 		return ""
 	}
+}
 
+func EntryBucketErr(desc string) string {
+	if len(desc) > 18 || len(desc) == 0 {
+		return "Please enter a valid bucket"
+	} else {
+		return ""
+	}
 }
 
 func EntryAmtErr(num string) string {

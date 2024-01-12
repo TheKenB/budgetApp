@@ -14,6 +14,7 @@ import (
 )
 
 var descText string = ""
+var bucketText string = ""
 var amtText string = ""
 var dateText string = ""
 var curText ui.ActiveText = ui.ActiveText{Active: false, Pos: [2]int{0, 0}}
@@ -22,6 +23,7 @@ var elapsedTime float32 = 0
 var addColor = color.MinorAColor()
 var descErr string = ""
 var amtErr string = ""
+var bucketErr string = ""
 var dateErr string = ""
 
 func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
@@ -36,13 +38,18 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 	rendEle.DrawInputs(entryDescriptRect, "Entry Description")
 	rendEle.DrawInputErr(1, 3, width, height, descErr, color.DangerColor(), false)
 
+	//Bucket
+	var bucketRec ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &bucketText}
+	rendEle.DrawInputs(bucketRec, "Buckets")
+	rendEle.DrawInputErr(1, 3, width, height, bucketErr, color.DangerColor(), false)
+
 	//Amount Field
-	var amountRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(5, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &amtText}
+	var amountRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(6, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &amtText}
 	rendEle.DrawInputs(amountRect, "Amount")
 	rendEle.DrawInputErr(5, 3, width, height, amtErr, color.DangerColor(), false)
 
 	//Date Field
-	var dateRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(7, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &dateText}
+	var dateRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(8, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &dateText}
 	rendEle.DrawInputs(dateRect, "Date")
 	rendEle.DrawInputErr(7, 3, width, height, dateErr, color.DangerColor(), true)
 
@@ -53,7 +60,7 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 	color.DrawMajorText("Add", int32(gr.GridPosTextXCent(10, width)), int32(gr.GridPosYBot(2, height)), 32, color.MinorCColor())
 
 	// Check if user is in input boxes
-	inputRects = append(inputRects, entryDescriptRect, amountRect, dateRect)
+	inputRects = append(inputRects, entryDescriptRect, bucketRec, amountRect, dateRect, bucketRec)
 
 	for _, rect := range inputRects {
 		if rl.CheckCollisionPointRec(rl.GetMousePosition(), rect.Location) {
@@ -80,6 +87,7 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 
 func ClearInputs() {
 	descText = ""
+	bucketText = ""
 	amtText = ""
 	dateText = ""
 }
@@ -97,7 +105,7 @@ func HandleAddButton(rec rl.Rectangle) bool {
 				if err != nil {
 					panic(err)
 				}
-				var newEntry enJson.Entries = enJson.Entries{Description: descText, Amount: float32(amt), Date: dateText, Index: 0}
+				var newEntry enJson.Entries = enJson.Entries{Description: descText, Bucket: bucketText, Amount: float32(amt), Date: dateText, Index: 0}
 				enJson.SaveEntry(newEntry)
 				ClearInputs()
 				return true

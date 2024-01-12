@@ -10,6 +10,7 @@ import (
 type Entries struct {
 	Index       int32
 	Description string
+	Bucket      string
 	Amount      float32
 	Date        string
 }
