@@ -78,11 +78,11 @@ func HandleEntryPageResults(dGrid gr.DisplayGrid, records []enJson.Entries) bool
 		rendEl.DrawResultRowText(records[j].Date, strDate2, 7, 5, width, height, rowCount, 28, doubleDraw)
 		rendEl.DrawResultAction(xButton, 9, 5, width, height, rowCount, doubleDraw)
 
-		posVectorTop := rl.Vector2{X: float32(gr.GridPosXLeft(8, width) + 5), Y: float32(gr.GridPosYTop(5+rowCount, height) + 5)}
-		posVectorBot := rl.Vector2{X: float32(gr.GridPosXLeft(8, width) + 5), Y: float32(gr.GridPosYBot(5+rowCount, height) + 5)}
-		listChange = DeleteRecordCheck(width, height, rowCount, posVectorTop, records[j])
+		deleteVectorTop := rl.Vector2{X: float32(gr.GridPosXLeft(9, width) + 5), Y: float32(gr.GridPosYTop(5+rowCount, height) + 5)}
+		deleteVectorBot := rl.Vector2{X: float32(gr.GridPosXLeft(9, width) + 5), Y: float32(gr.GridPosYBot(5+rowCount, height) + 5)}
+		listChange = DeleteRecordCheck(width, height, rowCount, deleteVectorTop, records[j])
 		if !listChange && doubleDraw {
-			listChange = DeleteRecordCheck(width, height, rowCount, posVectorBot, records[j+1])
+			listChange = DeleteRecordCheck(width, height, rowCount, deleteVectorBot, records[j+1])
 		}
 		if listChange {
 			return listChange

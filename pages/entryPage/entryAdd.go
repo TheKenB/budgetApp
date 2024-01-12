@@ -41,17 +41,17 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 	//Bucket
 	var bucketRec ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &bucketText}
 	rendEle.DrawInputs(bucketRec, "Buckets")
-	rendEle.DrawInputErr(1, 3, width, height, bucketErr, color.DangerColor(), false)
+	rendEle.DrawInputErr(4, 3, width, height, bucketErr, color.DangerColor(), false)
 
 	//Amount Field
 	var amountRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(6, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &amtText}
 	rendEle.DrawInputs(amountRect, "Amount")
-	rendEle.DrawInputErr(5, 3, width, height, amtErr, color.DangerColor(), false)
+	rendEle.DrawInputErr(6, 3, width, height, amtErr, color.DangerColor(), false)
 
 	//Date Field
 	var dateRect ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(8, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &dateText}
 	rendEle.DrawInputs(dateRect, "Date")
-	rendEle.DrawInputErr(7, 3, width, height, dateErr, color.DangerColor(), true)
+	rendEle.DrawInputErr(8, 3, width, height, dateErr, color.DangerColor(), false)
 
 	//Add Button
 	var addRect = ui.Button(float32(gr.GridPosXLeft(10, width)), float32(gr.GridPosYBot(2, height)), width, height, 1)
@@ -100,6 +100,7 @@ func HandleAddButton(rec rl.Rectangle) bool {
 			descErr = errHand.EntryDescErr(descText)
 			amtErr = errHand.EntryAmtErr(amtText)
 			dateErr = errHand.EntryDateErr(dateText)
+			bucketErr = errHand.EntryBucketErr(bucketText)
 			if len(descErr) == 0 && len(amtErr) == 0 && len(dateErr) == 0 {
 				amt, err := strconv.ParseFloat(amtText, 32)
 				if err != nil {

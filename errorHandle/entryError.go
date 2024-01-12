@@ -7,25 +7,32 @@ import (
 )
 
 func EntryDescErr(desc string) string {
-	if len(desc) > 18 || len(desc) == 0 {
-		return "Please enter a valid description"
+	if len(desc) > 18 {
+		return "Max length 18"
+	} else if len(desc) == 0 {
+		return "Desc required"
 	} else {
 		return ""
 	}
 }
 
-func EntryBucketErr(desc string) string {
-	if len(desc) > 18 || len(desc) == 0 {
-		return "Please enter a valid bucket"
+func EntryBucketErr(bucket string) string {
+	if len(bucket) > 11 {
+		return "Max length 12"
+	} else if len(bucket) == 0 {
+		return "Bucket required"
 	} else {
 		return ""
 	}
 }
 
 func EntryAmtErr(num string) string {
-	if len(num) > 11 || len(num) == 0 {
-		return "Please enter a valid amount"
+	if len(num) > 11 {
+		return "Max length 12"
+	} else if len(num) == 0 {
+		return "Amount required"
 	}
+
 	if num == "" {
 		return "Please enter an amount"
 	}
@@ -37,19 +44,18 @@ func EntryAmtErr(num string) string {
 	tempString := strings.Replace(num, ".", "", -1)
 	_, err := strconv.Atoi(tempString)
 	if err != nil {
-		return "Enter a amount in style of 0.00 or 000"
+		return "Format of 0.00 or 000"
 	}
-
 	return ""
 }
 
 func EntryDateErr(date string) string {
 	if len(date) == 0 || len(date) < 8 {
-		return "Enter date in format MM/dd/yyyy"
+		return "Format of MM/dd/yyyy"
 	}
 
 	if !regexp.MustCompile(`\d{1,2}\/\d{1,2}\/\d{2,4}`).MatchString(date) {
-		return "Enter date in format MM/dd/yyyy"
+		return "Format of MM/dd/yyyy"
 	}
 
 	return ""
