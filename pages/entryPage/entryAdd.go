@@ -15,6 +15,7 @@ import (
 
 var descText string = ""
 var bucketText string = ""
+var bucketList []string = []string{"test", "test2", "test3", "test4"}
 var amtText string = ""
 var dateText string = ""
 var curText ui.ActiveText = ui.ActiveText{Active: false, Pos: [2]int{0, 0}}
@@ -25,6 +26,7 @@ var descErr string = ""
 var amtErr string = ""
 var bucketErr string = ""
 var dateErr string = ""
+var bucketOpen bool = false
 
 func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 	var height int = dGrid.Height
@@ -39,8 +41,13 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 	rendEle.DrawInputErr(1, 3, width, height, descErr, color.DangerColor(), false)
 
 	//Bucket
-	var bucketRec ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &bucketText}
-	rendEle.DrawInputs(bucketRec, "Buckets")
+	//var bucketRec ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &bucketText}
+	var bucketHeaderRec ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &bucketText}
+	var bucketMenuRec ui.MenuTextCollissionLocation = ui.MenuTextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYTop(3, height)), width, height, 2), List: bucketList}
+	rendEle.DrawInputs(bucketHeaderRec, "Buckets")
+	if bucketOpen {
+		bucketText = rendEle.DrawDropdown(bucketMenuRec, bucketText)
+	}
 	rendEle.DrawInputErr(4, 3, width, height, bucketErr, color.DangerColor(), false)
 
 	//Amount Field
@@ -60,17 +67,22 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 	color.DrawMajorText("Add", int32(gr.GridPosTextXCent(10, width)), int32(gr.GridPosYBot(2, height)), 32, color.MinorCColor())
 
 	// Check if user is in input boxes
-	inputRects = append(inputRects, entryDescriptRect, bucketRec, amountRect, dateRect, bucketRec)
+	inputRects = append(inputRects, entryDescriptRect, bucketHeaderRec, amountRect, dateRect)
 
 	for _, rect := range inputRects {
 		if rl.CheckCollisionPointRec(rl.GetMousePosition(), rect.Location) {
 			inTextBox = true
+			if rect.Location == bucketHeaderRec.Location {
+				bucketOpen = true
+			}
 			if rl.IsMouseButtonPressed(rl.MouseButtonLeft) {
 				rl.SetMouseCursor((rl.MouseCursorIBeam))
 				curText = ui.ActiveText{Active: true, Pos: [2]int{int(rect.Location.X), int(rect.Location.Y)}}
 			}
 		}
 	}
+
+	HandleBucketDropdown(bucketMenuRec)
 	HandleInputTyping(inputRects)
 	var saved bool = false
 	saved = HandleAddButton(addRect)
@@ -167,5 +179,11 @@ func HandleInputTyping(recs []ui.TextCollissionLocation) {
 				}
 			}
 		}
+	}
+}
+
+func HandleBucketDropdown(rect ui.MenuTextCollissionLocation) {
+	if !rl.CheckCollisionPointRec(rl.GetMousePosition(), rect.Location) && rl.IsMouseButtonPressed(rl.MouseButtonLeft) {
+		bucketOpen = false
 	}
 }

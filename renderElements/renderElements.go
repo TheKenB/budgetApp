@@ -11,7 +11,6 @@ import (
 
 // Draw Inputs
 func DrawInputs(headerRec ui.TextCollissionLocation, title string) {
-
 	x := headerRec.Location.X
 	y := headerRec.Location.Y
 	text := headerRec.Text
@@ -58,7 +57,6 @@ func DrawResultRowText(value1, value2 string, x, y, width, height, rowCount, fon
 
 // Draw row action button
 func DrawResultAction(icon rl.Texture2D, x, y, width, height, rowCount int, doubleDraw bool) {
-
 	posVectorTop := rl.Vector2{X: float32(gr.GridPosXLeft(x, width) + 5), Y: float32(gr.GridPosYTop(y+rowCount, height) + 5)}
 	posVectorBot := rl.Vector2{X: float32(gr.GridPosXLeft(x, width) + 5), Y: float32(gr.GridPosYBot(y+rowCount, height) + 5)}
 	topHoverState := uiUtil.IsHoverRec(rl.Rectangle{X: posVectorTop.X, Y: posVectorTop.Y, Width: float32(width / 4), Height: float32(height / 2)})
@@ -67,4 +65,24 @@ func DrawResultAction(icon rl.Texture2D, x, y, width, height, rowCount int, doub
 	if doubleDraw {
 		rl.DrawTextureEx(icon, posVectorBot, 0, 0.5, uiUtil.HoverBright(botHoverState))
 	}
+}
+
+// Draw Dropdown Menu
+func DrawDropdown(menuRec ui.MenuTextCollissionLocation, currentText string) string {
+	x := menuRec.Location.X
+	y := menuRec.Location.Y
+	text := menuRec.List
+	length := len(text)
+	returnText := currentText
+	rl.DrawRectangleRec(rl.Rectangle{X: menuRec.Location.X, Y: menuRec.Location.Y, Height: menuRec.Location.Height * float32(length), Width: menuRec.Location.Width}, color.MinorDColor())
+	rl.DrawLineEx(rl.Vector2{X: x, Y: y}, rl.Vector2{X: x + menuRec.Location.Width, Y: y}, 5, color.MinorBColor())
+	for i, message := range text {
+		curRect := rl.Rectangle{X: x, Y: y + (menuRec.Location.Height * float32((i))), Width: menuRec.Location.Width, Height: menuRec.Location.Height}
+		if rl.CheckCollisionPointRec(rl.GetMousePosition(), curRect) {
+			returnText = message
+			rl.DrawRectangleRec(curRect, color.MinorBColor())
+		}
+		color.DrawMinorText(message, int32(x+15), int32(y+(menuRec.Location.Height*float32((i)))), 32, rl.Black)
+	}
+	return returnText
 }

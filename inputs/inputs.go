@@ -9,6 +9,11 @@ type TextCollissionLocation struct {
 	Text     *string
 }
 
+type MenuTextCollissionLocation struct {
+	Location rl.Rectangle
+	List     []string
+}
+
 type ActiveText struct {
 	Active bool
 	Pos    [2]int
@@ -48,4 +53,11 @@ func ResultLine(posX, posY float32, width, height, squares int) rl.Rectangle {
 	var sHeight float32 = float32(height)
 	var input rl.Rectangle = rl.NewRectangle(posX, posY, float32(sWidth), float32(sHeight))
 	return input
+}
+
+func DropDown(posX, posY float32, width, height, squares int) rl.Rectangle {
+	var sWidth float32 = float32((width)) * float32(squares)
+	var menHeight float32 = float32(height * 6)
+	var dropMen rl.Rectangle = rl.NewRectangle(posX, posY+float32(height), float32(sWidth), float32(menHeight))
+	return dropMen
 }

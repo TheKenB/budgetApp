@@ -15,9 +15,8 @@ func HandlePageEntry(grid dg.DisplayGrid) bool {
 		enJson.LoadEntries(&entries)
 		ResetLoadStatus()
 	}
-	addChange = HandleEntryPageInput(grid)
 	resultChange = HandleEntryPageResults(grid, entries)
-
+	addChange = HandleEntryPageInput(grid)
 	if addChange || resultChange {
 		return true
 	} else {

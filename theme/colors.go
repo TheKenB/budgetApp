@@ -32,6 +32,11 @@ func MinorCColor() rl.Color {
 	return rl.NewColor(213, 221, 213, 255)
 }
 
+// Very Light Green
+func MinorDColor() rl.Color {
+	return rl.NewColor(232, 242, 232, 255)
+}
+
 // Red danger
 func DangerColor() rl.Color {
 	return rl.NewColor(204, 51, 0, 255)
