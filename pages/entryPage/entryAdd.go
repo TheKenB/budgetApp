@@ -41,7 +41,6 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 	rendEle.DrawInputErr(1, 3, width, height, descErr, color.DangerColor(), false)
 
 	//Bucket
-	//var bucketRec ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &bucketText}
 	var bucketHeaderRec ui.TextCollissionLocation = ui.TextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYBot(2, height)), width, height, 2), Text: &bucketText}
 	var bucketMenuRec ui.MenuTextCollissionLocation = ui.MenuTextCollissionLocation{Location: ui.TextInput(float32(gr.GridPosXLeft(4, width)), float32(gr.GridPosYTop(3, height)), width, height, 2), List: bucketList}
 	rendEle.DrawInputs(bucketHeaderRec, "Buckets")
@@ -72,7 +71,7 @@ func HandleEntryPageInput(dGrid gr.DisplayGrid) bool {
 	for _, rect := range inputRects {
 		if rl.CheckCollisionPointRec(rl.GetMousePosition(), rect.Location) {
 			inTextBox = true
-			if rect.Location == bucketHeaderRec.Location {
+			if rect.Location == bucketHeaderRec.Location && rl.IsMouseButtonPressed(rl.MouseButtonLeft) {
 				bucketOpen = true
 			}
 			if rl.IsMouseButtonPressed(rl.MouseButtonLeft) {
@@ -183,7 +182,10 @@ func HandleInputTyping(recs []ui.TextCollissionLocation) {
 }
 
 func HandleBucketDropdown(rect ui.MenuTextCollissionLocation) {
-	if !rl.CheckCollisionPointRec(rl.GetMousePosition(), rect.Location) && rl.IsMouseButtonPressed(rl.MouseButtonLeft) {
+	var text []string = rect.List
+	var length int = len(text)
+	var areaRect rl.Rectangle = rl.Rectangle{X: rect.Location.X, Y: rect.Location.Y, Height: rect.Location.Height * float32(length), Width: rect.Location.Width}
+	if rl.CheckCollisionPointRec(rl.GetMousePosition(), areaRect) && rl.IsMouseButtonPressed(rl.MouseButtonLeft) {
 		bucketOpen = false
 	}
 }
